@@ -232,6 +232,3 @@ Autor Roman Karas
 ---
 
 
-docker-compose up --build
-Bearer <token>
-php bin/phpunit
