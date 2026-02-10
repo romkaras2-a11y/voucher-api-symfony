@@ -1,27 +1,27 @@
-# ??? Voucher REST API � Symfony 6.4
+# 🎟️ Voucher REST API – Symfony 6.4
 
-Eine **Symfony-basierte REST-API** zur Verwaltung und Einlosung von Gutscheinen (Voucher).  
+Eine **Symfony-basierte REST-API** zur Verwaltung und Einlösung von Gutscheinen (Voucher).  
 Fokus: **saubere Architektur**, **Security**, **Testbarkeit** und **API-Standards**.
 
 ---
 
-## ? Features
+## ✨ Features
 
-- ? Gutschein erstellen, auflisten & abrufen
-- ? Gutschein einlosen (idempotent)
-- ? Validierung:
-  - Gultigkeitszeitraum
-  - Einloseanzahl
+- ✅ Gutschein erstellen, auflisten & abrufen
+- ✅ Gutschein einlösen (idempotent)
+- ✅ Validierung:
+  - Gültigkeitszeitraum
+  - Einlöseanzahl
   - Mehrfachverwendung
-- ?? JWT-basierte Authentifizierung
-- ?? Swagger / OpenAPI Dokumentation (ApiPlatform)
-- ?? Unit- & API-Tests
-- ?? Docker Setup (API + DB)
-- ?? Saubere Trennung von Controller, Service & Domain
+- 🔐 JWT-basierte Authentifizierung
+- 📄 Swagger / OpenAPI Dokumentation (ApiPlatform)
+- 🧪 Unit- & API-Tests
+- 🐳 Docker Setup (API + DB)
+- 🧱 Saubere Trennung von Controller, Service & Domain
 
 ---
 
-## ??? Architekturubersicht
+## 🏗️ Architekturübersicht
 
 ```text
 Client (Postman / Swagger / Frontend)
@@ -40,20 +40,20 @@ Service Layer (Business Logic)
 Domain / Entity (Voucher)
         |
         v
-Doctrine ORM > MySQL
+Doctrine ORM → MySQL
 ````
 
 ### Architekturprinzipien
 
-* **Controller sind dunn**
+* **Controller sind dünn**
 * **Business-Logik liegt im Service-Layer**
 * **Entities enthalten nur Daten & Validation**
-* **Idempotente Einlosung**
+* **Idempotente Einlösung**
 * **Security-first Ansatz**
 
 ---
 
-## ?? Technologie-Stack
+## 📦 Technologie-Stack
 
 | Bereich   | Technologie       |
 | --------- | ----------------- |
@@ -69,7 +69,7 @@ Doctrine ORM > MySQL
 
 ---
 
-## ?? Setup � Lokal (Windows 7 / PHP 8.1)
+## 🚀 Setup – Lokal (Windows 7 / PHP 8.1)
 
 ### Voraussetzungen
 
@@ -87,13 +87,13 @@ php bin/console doctrine:migrations:migrate
 php -S localhost:8000 -t public
 ```
 
-?? API lauft unter:
+➡️ API läuft unter:
 
 ```
 http://localhost:8000
 ```
 
-?? Swagger UI:
+➡️ Swagger UI:
 
 ```
 http://localhost:8000/api
@@ -101,7 +101,7 @@ http://localhost:8000/api
 
 ---
 
-## ?? Setup � Docker
+## 🐳 Setup – Docker
 
 ```bash
 docker-compose up --build
@@ -112,7 +112,7 @@ docker-compose up --build
 
 ---
 
-## ?? Authentifizierung (JWT)
+## 🔐 Authentifizierung (JWT)
 
 ### Login
 
@@ -142,11 +142,11 @@ Antwort:
 Authorization: Bearer <TOKEN>
 ```
 
-?? Alle `/api/*` Endpunkte sind geschutzt.
+➡️ Alle `/api/*` Endpunkte sind geschützt.
 
 ---
 
-## ?? Testing
+## 🧪 Testing
 
 ### Unit Tests
 
@@ -155,7 +155,7 @@ php bin/phpunit
 ```
 
 * Business-Logik (`VoucherRedeemer`)
-* Validierung & Einlose-Regeln
+* Validierung & Einlöse-Regeln
 
 ### API / Functional Tests
 
@@ -164,32 +164,32 @@ php bin/phpunit
 
 ---
 
-## ?? Typische Fehlerfalle
+## ⚠️ Typische Fehlerfälle
 
-* ? Gutschein abgelaufen > HTTP 400
-* ? Maximale Einlosungen erreicht > HTTP 400
-* ? Ungultiger Token > HTTP 401
-* ? Zugriff ohne Rolle > HTTP 403
+* ❌ Gutschein abgelaufen → HTTP 400
+* ❌ Maximale Einlösungen erreicht → HTTP 400
+* ❌ Ungültiger Token → HTTP 401
+* ❌ Zugriff ohne Rolle → HTTP 403
 
-?? **Keine internen Fehlerdetails werden geleakt**
+➡️ **Keine internen Fehlerdetails werden geleakt**
 
 ---
 
-## ?? Security-Konzept
+## 🔒 Security-Konzept
 
 * JWT Authentication (stateless)
 * Input Validation (Symfony Validator)
 * Keine sensiblen Daten im Response
-* Vorbereitung fur Rate Limiting (Symfony RateLimiter)
+* Vorbereitung für Rate Limiting (Symfony RateLimiter)
 * Trennung von Auth & Business-Logik
 
 ---
 
-## ?? Integration (z. B. Shopware)
+## 🔌 Integration (z. B. Shopware)
 
 * API-first Design
-* Nutzung uber HTTP / JWT
-* Ideal fur:
+* Nutzung über HTTP / JWT
+* Ideal für:
 
   * Shopware Plugin
   * Headless Frontends
@@ -197,38 +197,38 @@ php bin/phpunit
 
 ---
 
-## ?? Projektstruktur (Auszug)
+## 📁 Projektstruktur (Auszug)
 
 ```text
 src/
-+-- Controller/
-+-- Entity/
-+-- Service/
-+-- Exception/
+├── Controller/
+├── Entity/
+├── Service/
+├── Exception/
 tests/
-+-- Service/
-+-- Api/
+├── Service/
+├── Api/
 ```
 
 ---
 
-## ?? Weiterentwicklung (optional)
+## 🧭 Weiterentwicklung (optional)
 
-* ?? Rate Limiting
-* ?? User-Management (DB-basiert)
-* ?? Voucher Usage Reporting
-* ?? GitHub Actions CI
-* ?? Shopware Plugin
+* 🔁 Rate Limiting
+* 👥 User-Management (DB-basiert)
+* 📊 Voucher Usage Reporting
+* 🧾 GitHub Actions CI
+* 🛒 Shopware Plugin
 
 ---
 
-## ????? Autor
+## 🧑‍💻 Autor
 
 Entwickelt als **technische Aufgabe / Demo-Projekt**
-mit Fokus auf **Clean Code & API Design**.
+
 
 ```
-
+Autor Roman Karas
 ---
 
 
