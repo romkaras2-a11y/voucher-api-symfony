@@ -4,32 +4,6 @@ A Symfony-based REST API for managing vouchers (creation, listing, validation, r
 built with ApiPlatform, Doctrine, JWT Security and Docker.
 
 ---
-🏗️ Architekturübersicht
-Client (Postman / Swagger / Frontend)
-        |
-        | HTTP + JWT Bearer
-        v
-ApiPlatform (REST / OpenAPI)
-        |
-        v
-Controller (thin)
-        |
-        v
-Service Layer (Business Logic)
-        |
-        v
-Domain / Entity (Voucher)
-        |
-        v
-Doctrine ORM → MySQL
-
-Architekturprinzipien
-
-Controller sind dünn
-
-Business-Logik liegt im Service-Layer
-
-Entities enthalten nur Daten & Validation
 
 ## 🚀 Features
 
