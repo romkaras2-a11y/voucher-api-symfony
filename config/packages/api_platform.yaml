@@ -1,0 +1,5 @@
+# config/packages/api_platform.yaml
+api_platform:
+    swagger:
+        api_keys:
+            Authorization: Bearer

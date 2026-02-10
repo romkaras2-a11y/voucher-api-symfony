@@ -1,0 +1,55 @@
+{
+  "info": {
+    "name": "Voucher API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [{"key":"Content-Type","value":"application/json"}],
+        "url": {"raw":"http://localhost:8000/api/login","protocol":"http","host":["localhost"],"port":"8000","path":["api","login"]},
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"api_user\",\"password\":\"dein_passwort\"}"
+        }
+      },
+      "event": [{
+        "listen":"test",
+        "script":{"exec":["pm.environment.set(\"jwt_token\", pm.response.json().token);"],"type":"text/javascript"}
+      }]
+    },
+    {
+      "name": "Create Voucher",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key":"Content-Type","value":"application/json"},
+          {"key":"Authorization","value":"Bearer {{jwt_token}}"}
+        ],
+        "url": {"raw":"http://localhost:8000/api/vouchers"},
+        "body": {
+          "mode":"raw",
+          "raw":"{\n  \"code\":\"WELCOME10\",\n  \"type\":\"percent\",\n  \"value\":10,\n  \"validFrom\":\"2026-01-01T00:00:00\",\n  \"validUntil\":\"2026-12-31T23:59:59\",\n  \"multiUse\":false,\n  \"maxRedemptions\":1\n}"
+        }
+      }
+    },
+    {
+      "name": "Get All Vouchers",
+      "request": {
+        "method":"GET",
+        "header":[{"key":"Authorization","value":"Bearer {{jwt_token}}"}],
+        "url":{"raw":"http://localhost:8000/api/vouchers"}
+      }
+    },
+    {
+      "name": "Redeem Voucher",
+      "request": {
+        "method":"PATCH",
+        "header":[{"key":"Authorization","value":"Bearer {{jwt_token}}"}],
+        "url":{"raw":"http://localhost:8000/api/vouchers/{{voucher_id}}/redeem"}
+      }
+    }
+  ]
+}
