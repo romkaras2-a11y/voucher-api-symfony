@@ -2,71 +2,157 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Patch;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'vouchers')]
-#[ApiResource(
-    operations: [
-        new Get(),
-        new GetCollection(),
-        new Post(),
-        new Patch(
-            uriTemplate: '/vouchers/{id}/redeem',
-            controller: App\Controller\RedeemVoucherController::class,
-            name: 'redeem_voucher'
-        )
-    ]
-)]
-
-
-
+#[ORM\Table(name: "voucher")]
 class Voucher
 {
-    #[ORM\Column(unique: true, length: 100)]
-    #[Assert\NotBlank(message: "Code darf nicht leer sein.")]
-    #[Assert\Length(
-        max: 100,
-        maxMessage: "Code darf maximal {{ limit }} Zeichen lang sein."
-    )]
-    private string $code;
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: "integer")]
+    private ?int $id = null;
 
-    #[ORM\Column(length: 10)]
-    #[Assert\Choice(
-        choices: ['amount', 'percent'],
-        message: "Typ muss 'amount' oder 'percent' sein."
-    )]
-    private string $type;
+    #[ORM\Column(type: "string", length: 50, unique: true)]
+    #[Assert\NotBlank]
+    private ?string $code = null;
 
-    #[ORM\Column]
-    #[Assert\Positive(message: "Wert muss gro?er als 0 sein.")]
-    private float $value;
+    #[ORM\Column(type: "string", length: 10)]
+    #[Assert\Choice(choices: ["amount", "percent"])]
+    private ?string $type = null;
 
-    #[ORM\Column(type: 'datetime')]
-    #[Assert\NotBlank(message: "validFrom muss gesetzt sein.")]
-    private \DateTimeInterface $validFrom;
+    #[ORM\Column(type: "float")]
+    #[Assert\NotBlank]
+    private ?float $value = null;
 
-    #[ORM\Column(type: 'datetime')]
-    #[Assert\NotBlank(message: "validUntil muss gesetzt sein.")]
-    private \DateTimeInterface $validUntil;
+    #[ORM\Column(type: "datetime")]
+    #[Assert\NotBlank]
+    private ?\DateTimeInterface $validFrom = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: "datetime")]
+    #[Assert\NotBlank]
+    private ?\DateTimeInterface $validUntil = null;
+
+    #[ORM\Column(type: "boolean")]
     private bool $multiUse = false;
 
-    #[ORM\Column]
-    #[Assert\Positive(message: "maxRedemptions muss gro?er als 0 sein.")]
+    #[ORM\Column(type: "integer")]
     private int $maxRedemptions = 1;
 
-    #[ORM\Column]
-    private int $redeemedCount = 0;
+    #[ORM\Column(type: "integer")]
+    private int $currentRedemptions = 0;
 
-    // Getter & Setter
+    // =====================
+    // Getters & Setters
+    // =====================
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    public function getValue(): ?float
+    {
+        return $this->value;
+    }
+
+    public function setValue(float $value): self
+    {
+        $this->value = $value;
+        return $this;
+    }
+
+    public function getValidFrom(): ?\DateTimeInterface
+    {
+        return $this->validFrom;
+    }
+
+    public function setValidFrom(\DateTimeInterface $validFrom): self
+    {
+        $this->validFrom = $validFrom;
+        return $this;
+    }
+
+    public function getValidUntil(): ?\DateTimeInterface
+    {
+        return $this->validUntil;
+    }
+
+    public function setValidUntil(\DateTimeInterface $validUntil): self
+    {
+        $this->validUntil = $validUntil;
+        return $this;
+    }
+
+    public function isMultiUse(): bool
+    {
+        return $this->multiUse;
+    }
+
+    public function setMultiUse(bool $multiUse): self
+    {
+        $this->multiUse = $multiUse;
+        return $this;
+    }
+
+    public function getMaxRedemptions(): int
+    {
+        return $this->maxRedemptions;
+    }
+
+    public function setMaxRedemptions(int $maxRedemptions): self
+    {
+        $this->maxRedemptions = $maxRedemptions;
+        return $this;
+    }
+
+    public function getCurrentRedemptions(): int
+    {
+        return $this->currentRedemptions;
+    }
+
+    // =====================
+    // Utility Methods
+    // =====================
+
+    public function incrementRedemptions(): self
+    {
+        $this->currentRedemptions++;
+        return $this;
+    }
+
+    public function isValid(): bool
+    {
+        $now = new \DateTime();
+        return $this->validFrom <= $now && $now <= $this->validUntil;
+    }
+
+    public function canBeRedeemed(): bool
+    {
+        return $this->isValid() && ($this->multiUse || $this->currentRedemptions < $this->maxRedemptions);
+    }
 }
+
 
 
